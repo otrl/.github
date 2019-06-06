@@ -1,4 +1,4 @@
-## The problem1
+## The problem
 [CORE-X](https://ontrackretail.atlassian.net/browse/CORE-X)
 
 
