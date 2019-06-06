@@ -1,11 +1,11 @@
 [CORE-X](https://ontrackretail.atlassian.net/browse/CORE-X)
 
-## The problem
+### The problem
 
-## Whats been done
+### Whats been done
 
-## What's been tested
+### What's been tested
 
-## Test evidence
+### Test evidence
 
-## Moving parts
+### Moving parts
