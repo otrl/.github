@@ -1,6 +1,6 @@
-**The problem**
 [CORE-X](https://ontrackretail.atlassian.net/browse/CORE-X)
 
+**The problem**
 
 **Whats been done**
 
