@@ -2,7 +2,7 @@
 
 ### The problem
 
-### Whats been done
+### What's been done
 
 ### What's been tested
 
