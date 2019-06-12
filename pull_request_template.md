@@ -7,6 +7,9 @@ E.g.: the root cause of the bug that this PR aims to fix
 ### What's been done
 A brief description of the solution, in terms of code changes.
 
+### To do
+- [ ] Checklist of remaining tasks before this PR can be considered "complete"
+
 ### Test
 Test scenarios + relative evidence.
 
