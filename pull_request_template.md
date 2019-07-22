@@ -5,10 +5,8 @@ A brief description of the underlying problem.
 E.g.: the root cause of the bug that this PR aims to fix
 
 ### What's been done
-A brief description of the solution, in terms of code changes.
-
-### To do
-- [ ] Checklist of remaining tasks before this PR can be considered "complete"
+- [ ] A brief description of the solution, in terms of code changes
+- [ ] A brief description of the remaining tasks before this PR can be considered "complete"
 
 ### Test
 Test scenarios + relative evidence.
