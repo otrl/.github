@@ -27,7 +27,7 @@ EOF
 
 ##############################################################################
 # Builds and publishes a Github release. If there is already a release for the
-# given tag, the scrip is going to forece update it. The release consists of 
+# given tag, the scrip is going to forece update it. The release consists of
 # the followings:
 #   - release name: [repo_name] - [latest_tag]
 #   - release notes: The list of commits that introduced in the release. Each
@@ -42,7 +42,8 @@ EOF
 #   None
 ##############################################################################
 main() {
-    repository_name=$(basename "$(git rev-parse --show-toplevel)")
+    #repository_name=$(basename "$(git rev-parse --show-toplevel)")
+    repository_name=$GITHUB_REPOSITORY
     latest_tag=$(git describe --tags --abbrev=0)
     previous_tag=$(git describe --abbrev=0 --tags "$(git rev-list --tags --skip=1 --max-count=1)" || true)
     if [ -z $previous_tag ]; then
@@ -67,53 +68,53 @@ main() {
     printf "\tRelease name: %s \n" "$release_name"
     printf "\tLatest tag: %s \n" "$latest_tag"
     printf "\tPrevious tag: %s \n" "$previous_tag"
-    echo 
+    echo
     echo -e "\e[33m Commits introduced \e[39m"
 
     IFS=$'\n'
     for c in ${commits}; do printf "\t%s \n" "$c"; done
     IFS=' '
 
-	echo 
+	echo
 	echo "RELEASE NOTES"
     echo "$release_notes"
 
-    echo 
+    echo
     echo -e "\e[33m Request payload \e[39m"
     create_release_request_payload "$latest_tag" "$release_name" "$release_notes"
 
     create_release_response=$(curl \
       -d "$(create_release_request_payload "$latest_tag" "$release_name" "$release_notes")" \
-      -H "Authorization: token $GITHUB_API_TOKEN" \
+      -H "Authorization: token $GITHUB_TOKEN" \
       -H "Content-Type: application/json" \
-      -X POST https://api.github.com/repos/otrl/"${repository_name}"/releases)
+      -X POST https://api.github.com/repos/"${repository_name}"/releases)
 
     already_exists=$(echo "$create_release_response" | grep "already_exists" || :) \
 
     if [ -z "$already_exists" ]; then
-        echo 
+        echo
         echo -e "\e[32m New release has been created: $release_name \e[39m"
-        echo 
+        echo
     else
         echo
         echo -e "\e[220m A release for $latest_tag tag already exists, updating release... \e[39m"
         echo
 
         get_release_response=$(curl \
-            -H "Authorization: token $GITHUB_API_TOKEN" \
+            -H "Authorization: token $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
-            -X GET https://api.github.com/repos/otrl/"$repository_name"/releases/tags/"$latest_tag")
+            -X GET https://api.github.com/repos/"${repository_name}"/releases/tags/"$latest_tag")
 
         release_id=$(echo "$get_release_response" | grep '"id":' | head -1 | grep -o '[0-9]\+')
 
         update_release_response=$(curl \
             -d "$(create_release_request_payload "$latest_tag" "$release_name" "$release_notes")" \
-            -H "Authorization: token $GITHUB_API_TOKEN" \
+            -H "Authorization: token $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
-            -X PATCH https://api.github.com/repos/otrl/"${repository_name}"/releases/"${release_id}")
+            -X PATCH https://api.github.com/repos/"${repository_name}"/releases/"${release_id}")
 
-        echo -e "\e[32m Release has been updated: $release_name \e[39m" 
-    fi   
+        echo -e "\e[32m Release has been updated: $release_name \e[39m"
+    fi
 }
 
 main "$@"
