@@ -1,20 +1,24 @@
 name: Tag repo with release notes
 on:
   workflow_call:
+    secrets:
+      github_token:
+        required: true
 
 jobs:
   tag:
+    name: Tag and create release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Bump version and push tag
         uses: aaronmgomez/github-tag-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.github_token }}
           DEFAULT_BUMP: patch
           VERBOSE: true
       - name: Create release
         shell: bash
         run: ./.github/scripts/build.sh
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.github_token }}
